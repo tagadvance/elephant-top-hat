@@ -6,8 +6,6 @@ namespace tagadvance\elephanttophat;
 
 class Top
 {
-	public const UNIT_PERCENT = '%';
-
 	private const COMMAND = 'top -b -n 2 -d 0.01 | grep ^top -A 5 | tail -n 6';
 
 	private function __construct()
@@ -21,6 +19,10 @@ class Top
 		return self::parse($output);
 	}
 
+	/**
+	 * @param string $output The first 5 lines of output from the `top` command.
+	 * @return Measurement[] An array of measurements indexed by measurement name.
+	 */
 	public static function parse(string $output): array
 	{
 		[$top, $tasks, $cpu, $memory, $swap] = explode(PHP_EOL, $output);
@@ -30,6 +32,7 @@ class Top
 
 			if (preg_match($pattern, $subject, $matches)) {
 				array_shift($matches);
+
 				return $matches;
 			}
 
@@ -57,19 +60,19 @@ class Top
 		$pattern = '/^([KMGTPE]iB) Swap:\s*([0-9.]+) total,\s*([0-9.]+) free,\s*([0-9.]+) used\.\s*([0-9.]+) avail Mem\s*$/';
 		[$swapUnit, $swapTotal, $swapFree, $swapUsed, $memoryAvailable] = $match($pattern, $swap);
 
-		$toPercent = function (string $value): array {
-			return [$value, self::UNIT_PERCENT];
+		$toPercent = function (string $value): Measurement {
+			return new Measurement($value, Measurement::UNIT_PERCENT);
 		};
 
-		$toMemory = function (string $value) use ($memoryUnit): array {
-			return [$value, $memoryUnit];
+		$toMemory = function (string $value) use ($memoryUnit): Measurement {
+			return new Measurement($value, $memoryUnit);
 		};
 
-		$toSwap = function (string $value) use ($swapUnit): array {
-			return [$value, $swapUnit];
+		$toSwap = function (string $value) use ($swapUnit): Measurement {
+			return new Measurement($value, $swapUnit);
 		};
 
-		return [
+		$measurements = [
 			'time' => \DateTimeImmutable::createFromFormat('H:i:s', $time),
 			'uptime' => $uptime,
 			'users' => intval($users),
@@ -99,5 +102,14 @@ class Top
 			'swap_used' => $toSwap($swapUsed),
 			'memory_available' => $toSwap($memoryAvailable)
 		];
+
+		return array_map(
+			function ($measurement): Measurement {
+				return $measurement instanceof Measurement
+					? $measurement
+					: new Measurement($measurement);
+			},
+			$measurements
+		);
 	}
 }

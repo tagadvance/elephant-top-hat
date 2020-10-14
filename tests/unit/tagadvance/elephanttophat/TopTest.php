@@ -33,8 +33,9 @@ final class TopTest extends TestCase
 			$result = Top::parse($output);
 
 			$this->assertIsArray($result);
-			// ensure all values are not null
-			$this->assertCount(count(array_filter($result, fn($value) => isset($value))), $result);
+			foreach ($result as $measurement) {
+				$this->assertInstanceOf(Measurement::class, $measurement);
+			}
 		}
 	}
 }
