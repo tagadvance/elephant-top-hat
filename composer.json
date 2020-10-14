@@ -1,0 +1,34 @@
+{
+    "name": "tagadvance/elephant-top-hat",
+    "description": "A tiny stand-alone library for parsing the Linux `top` command.",
+    "type": "library",
+    "keywords": [
+        "linux",
+        "top"
+    ],
+    "homepage": "https://github.com/tagadvance/elephant-top-hat",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tag",
+            "email": "tagadvance+github.com@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/tagadvance/elephant-top-hat/issues"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4",
+        "ext-bcmath": "*"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "" : "src/"
+        }
+    },
+    "require-dev": {
+        "ext-dom": "*",
+        "phpunit/phpunit": "^9.4"
+    }
+}
