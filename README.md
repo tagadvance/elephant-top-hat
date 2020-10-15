@@ -6,7 +6,7 @@ A tiny stand-alone library for parsing the Linux `top` command.
 composer require tagadvance/elephant-top-hat:dev-main
 ```
 
-## Example
+## Example Usage
 ```php
 use tagadvance\elephanttophat\Top;
 
@@ -76,7 +76,7 @@ yields e.g.
 		'value' => '0.0',
 		'unit' => '%',
 	]),
-	'cpu_%' => Measurement::__set_state([
+	'cpu_utilization' => Measurement::__set_state([
 		'value' => '5.6',
 		'unit' => '%',
 	]),

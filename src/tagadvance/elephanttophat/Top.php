@@ -87,7 +87,7 @@ class Top
 			'cpu_user_space' => $toPercent($cpuUserSpace),
 			'cpu_kernel_space' => $toPercent($cpuKernelSpace),
 			'cpu_nice' => $toPercent($cpuNice),
-			'cpu_%' => $toPercent(bcsub('100', $cpuIdle, 1)),
+			'cpu_utilization' => $toPercent(bcsub('100', $cpuIdle, 1)),
 			'cpu_idle' => $toPercent($cpuIdle),
 			'cpu_wait' => $toPercent($cpuWait),
 			'cpu_hardware_interrupts' => $toPercent($cpuHardwareInterrupts),
