@@ -11,7 +11,7 @@ class Measurement
 	private $value;
 	private ?string $unit;
 
-	public function __construct($value, string $unit = null)
+	public function __construct($value, ?string $unit = null)
 	{
 		$this->value = $value;
 		$this->unit = $unit;
