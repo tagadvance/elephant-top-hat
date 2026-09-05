@@ -1,0 +1,7 @@
+parameters:
+  # Level 6 (missing type hints on Measurement::$value and iterable value types)
+  # reports 3 errors. That is the next ratchet, not a regression.
+  level: 5
+  paths:
+    - src
+    - tests
