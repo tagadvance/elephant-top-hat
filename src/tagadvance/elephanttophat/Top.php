@@ -48,7 +48,7 @@ class Top
         $pattern = '/^top - (\d{2}:\d{2}:\d{2}) up\s*(.*),\s*(\d+) users?,\s*load average: (\d+\.\d{2}), (\d+\.\d{2}), (\d+\.\d{2})$/';
         [$time, $uptime, $users, $loadAverage1Minute, $loadAverage5Minutes, $loadAverage15Minutes] = $match($pattern, $top);
 
-        $pattern = '/^Tasks: (\d+) total,\s*(\d+) running, (\d+) sleeping,\s*(\d+) stopped,\s*(\d+) zombie$/';
+        $pattern = '/^Tasks:\s*(\d+) total,\s*(\d+) running,\s*(\d+) sleeping,\s*(\d+) stopped,\s*(\d+) zombie$/';
         [$tasksTotal, $tasksRunning, $tasksSleeping, $tasksStopped, $tasksZombie] = $match($pattern, $tasks);
 
         $pattern = '/^%Cpu\(s\):\s*(\d+\.\d+) us,\s*(\d+\.\d+) sy,\s*(\d+\.\d+) ni,\s*(\d+\.\d+) id,\s*(\d+\.\d+) wa,\s*(\d+\.\d+) hi,\s*(\d+\.\d+) si,\s*(\d+\.\d+) st$/';

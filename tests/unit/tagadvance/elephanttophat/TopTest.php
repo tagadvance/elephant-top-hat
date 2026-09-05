@@ -45,6 +45,19 @@ final class TopTest extends TestCase
         $this->assertSame('10098.1', $result['memory_available']->getValue());
     }
 
+    /**
+     * procps formats every task count as `%3u`, so a host with fewer than 100 tasks pads the
+     * counts with spaces where the parser expected exactly one.
+     */
+    public function testParseToleratesPaddedTaskCounts(): void
+    {
+        $result = Top::parse(self::readResource('debian-13-top-few-tasks.txt'));
+
+        $this->assertSame(3, $result['tasks_total']->getValue());
+        $this->assertSame(1, $result['tasks_running']->getValue());
+        $this->assertSame(2, $result['tasks_sleeping']->getValue());
+    }
+
     private static function readResource(string $filename): string
     {
         $tests = dirname(__DIR__, 3);
