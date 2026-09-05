@@ -10,7 +10,7 @@ final class TopTest extends TestCase
 {
     public function testExec(): void
     {
-        $this->assertIsArray(Top::exec());
+        $this->assertNotEmpty(Top::exec());
     }
 
     public function testParse(): void
@@ -24,7 +24,7 @@ final class TopTest extends TestCase
         foreach ($testFiles as $filename) {
             $result = Top::parse(self::readResource($filename));
 
-            $this->assertIsArray($result);
+            $this->assertNotEmpty($result);
             foreach ($result as $measurement) {
                 $this->assertInstanceOf(Measurement::class, $measurement);
             }
