@@ -1,4 +1,5 @@
 [![CI](https://github.com/tagadvance/elephant-top-hat/actions/workflows/ci.yml/badge.svg)](https://github.com/tagadvance/elephant-top-hat/actions/workflows/ci.yml)
+[![Packagist](https://img.shields.io/packagist/v/tagadvance/elephant-top-hat.svg)](https://packagist.org/packages/tagadvance/elephant-top-hat)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D%208.4-8892BF.svg)](https://www.php.net/supported-versions.php)
 [![License](https://img.shields.io/github/license/tagadvance/elephant-top-hat)](LICENSE)
 
@@ -7,7 +8,7 @@ A tiny stand-alone library for parsing the Linux `top` command.
 
 ## Installation
 ```
-composer require tagadvance/elephant-top-hat:dev-main
+composer require tagadvance/elephant-top-hat:^1.0
 ```
 
 ## Example Usage
