@@ -19,7 +19,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.4",
+        "php": "^8.4",
         "ext-bcmath": "*"
     },
     "autoload" : {
@@ -29,6 +29,8 @@
     },
     "require-dev": {
         "ext-dom": "*",
-        "phpunit/phpunit": "^9.4"
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.2",
+        "phpunit/phpunit": "^13.3"
     }
 }
