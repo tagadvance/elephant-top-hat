@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace tagadvance\elephanttophat;
 
+/**
+ * Parses the summary block `top` prints above its process table into named measurements.
+ * Only procps-ng's English output is understood, so `top` must run under a C locale.
+ */
 class Top
 {
     private const COMMAND = 'top -b -n 2 -d 0.01 | grep ^top -A 5 | tail -n 6';
 
     private function __construct() {}
 
+    /**
+     * Samples `top` twice a hundredth of a second apart and parses the second sample, because
+     * `top`'s first iteration reports CPU shares averaged since boot rather than current ones.
+     *
+     * @return Measurement[] Keyed by measurement name; see {@see parse()}.
+     * @throws \TypeError when `top` writes nothing at all — procps-ng missing, or no `/proc` to
+     *     read — because `shell_exec()` then returns null, which {@see parse()} will not accept.
+     * @throws \RuntimeException when the output does not match; the command does not pin
+     *     `LC_ALL=C`, so a translated locale reaches here too. See {@see parse()}.
+     */
     public static function exec(): array
     {
         $output = shell_exec(self::COMMAND);
@@ -18,8 +32,21 @@ class Top
     }
 
     /**
-     * @param string $output The first 5 lines of output from the `top` command.
-     * @return Measurement[] An array of measurements indexed by measurement name.
+     * Yields `time`, `uptime`, `users`, `load_average_*`, `tasks_*`, `cpu_*`, `memory_*`,
+     * `swap_*` and `memory_available`.
+     *
+     * @param string $output `top`'s five summary lines, newline separated. Anything past the
+     *     fifth line is ignored; fewer than five emits `Undefined array key` warnings first.
+     * @return Measurement[] Keyed by measurement name. `time` carries today's date in PHP's
+     *     default timezone, since `top` prints only a clock time; `cpu_*` are percentages and
+     *     `memory_*`/`swap_*` use whatever scale `top` printed (see `top -E`); `cpu_utilization`
+     *     is derived as `100 - cpu_idle` rather than reported by `top`.
+     * @throws \RuntimeException when any summary line fails to match: truncated or corrupt
+     *     input, a non-English locale (`top` translates the labels and prints comma decimals), a
+     *     pre-2.6.11 `%Cpu(s)` line lacking the `st` field, or a host large enough that procps
+     *     substitutes its `+` overflow marker for a value that will not fit `%9.9s`
+     *     (`MiB Mem : 2097152.+total`). That last one is deliberate — the alternative is
+     *     silently returning a truncated number.
      */
     public static function parse(string $output): array
     {
@@ -100,6 +127,8 @@ class Top
             'swap_total' => $toSwap($swapTotal),
             'swap_free' => $toSwap($swapFree),
             'swap_used' => $toSwap($swapUsed),
+            // `avail Mem` is printed on the swap line, and procps takes the scale label for both
+            // summary lines from the same argument, so $toSwap and $toMemory cannot disagree here.
             'memory_available' => $toSwap($memoryAvailable),
         ];
 
