@@ -1,10 +1,13 @@
 {
     "name": "tagadvance/elephant-top-hat",
-    "description": "A tiny stand-alone library for parsing the Linux `top` command.",
+    "description": "A tiny stand-alone library for parsing the output of the Linux top command.",
     "type": "library",
     "keywords": [
         "linux",
-        "top"
+        "top",
+        "procps",
+        "process",
+        "monitoring"
     ],
     "homepage": "https://github.com/tagadvance/elephant-top-hat",
     "license": "MIT",
