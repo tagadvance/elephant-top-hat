@@ -23,7 +23,9 @@ class Top
      */
     public static function parse(string $output): array
     {
-        [$top, $tasks, $cpu, $memory, $swap] = explode(PHP_EOL, $output);
+        // procps-ng pads summary lines to the terminal width, so trailing whitespace is expected.
+        $lines = array_map('rtrim', explode(PHP_EOL, $output));
+        [$top, $tasks, $cpu, $memory, $swap] = $lines;
 
         $match = function (string $pattern, string $subject): array {
             $matches = [];
