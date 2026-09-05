@@ -138,3 +138,6 @@ yields e.g.
 	]),
 ]
 ```
+
+## Support
+If you find this library useful, please consider [sponsoring](https://github.com/sponsors/tagadvance).
