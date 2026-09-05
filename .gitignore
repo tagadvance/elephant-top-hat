@@ -1,1 +1,14 @@
+# Composer
 /vendor/
+
+# PHPUnit
+.phpunit.*
+
+# PHP-CS-Fixer
+.php-cs-fixer.cache
+
+# PHPStan
+.phpstan.cache/
+
+# JetBrains
+/.idea/
